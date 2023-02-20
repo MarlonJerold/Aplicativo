@@ -1,26 +1,34 @@
 package com.example.myapplication
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.support.v4.os.IResultReceiver.Default
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -32,63 +40,82 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
-                LoginPage()
+                Greeting()
             }
         }
     }
 }
+@Composable
+fun Greeting() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        var textEmail by remember {
+            mutableStateOf("")
+        }
+        var textPass by remember {
+            mutableStateOf("")
+        }
+
+        OutlinedTextField(value = textEmail, onValueChange = {newTextEmail ->
+            textEmail = newTextEmail
+        },
+        label = {
+            Text(text = "E-mail")
+        },
+        leadingIcon = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.Email,
+                    contentDescription = "Email Icon"
+                )
+            }
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                Log.d("TimeAction", "Cliked")
+            }
+        )
+        );
+        OutlinedTextField(value = textPass, onValueChange = {newTextPass ->
+            textPass = newTextPass
+        },
+        label = {
+            Text(text = "Password")
+        },
+        leadingIcon = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.Lock,
+                    contentDescription = "Pass Icon"
+                )
+            }
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                Log.d("TimeAction", "ClickPass")
+            }
+        )
+        )
+
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-fun LoginPage() {
-
-    val image = painterResource(id = R.drawable.imagemteste)
-
-    Box(
-        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),contentAlignment = Alignment.TopCenter ){
-
-            Image(
-                painter = image,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth()
-                    .blur(
-                        radiusX = 10.dp,
-                        radiusY = 10.dp,
-                        edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(8.dp))
-                    ),
-                contentScale = ContentScale.Crop
-            )
-        }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.68f)
-                .padding(10.dp)
-
-        ) {
-            Text("Email", fontSize = 35.sp,
-            fontWeight = FontWeight.Light,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentWidth(Alignment.CenterHorizontally)
-                    .padding(start = 16.dp, top = 16.dp)
-            )
-            Text("Senha", fontSize = 35.sp,
-                fontWeight = FontWeight.Light,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentWidth(Alignment.CenterHorizontally)
-                    .padding(start = 16.dp, top = 150.dp)
-
-            )
-
-
-        }
+fun DefaultPreview() {
+    MyApplicationTheme {
+        Greeting()
     }
 }
